@@ -1,0 +1,179 @@
+---
+title: "Introduction to Quarto pt.2"
+author: "Valeria Duran"
+date: "2023-11-30"
+format: 
+  revealjs:
+     theme: sky
+     slide-number: c
+     self-contained: true
+     preview-links: auto
+     #toc: true
+  pptx: default
+  pdf: default
+prefer-html: true
+---
+##
+
+```{css, echo = FALSE}
+.justify {
+  text-align: justify !important
+}
+
+.center {
+  text-align: center !important
+}
+
+
+code.sourceCode {
+  font-size: 62%;
+}
+
+.small-code{
+  font-size: 74%
+}
+
+.output-code{
+  font-size: 60%
+}
+
+.highlight-last  {
+  color: grey;
+  .current-fragment {
+    color: #5500ff;
+  }
+}
+
+```
+
+
+## What is Quarto? {.smaller}
+
+::: incremental
+-   Quarto is an open-source scientific and technical publishing system built on Pandoc <span style="color:red;">(CL interface, not an R package)</span>
+-   Next generation version of R Markdown from Posit
+-   Multi-language: R, Python, Julia, Observable JS
+-   Authoring tools: RStudio IDE, VSCode, JupyterLab
+    -   Integration with Jupyter enables use of additional languages
+- Can render most existing Rmd files
+- Has many outputs: publications, books, websites, dashboards
+
+:::
+
+
+## Why is this cool? {.smaller}
+
+::: {.incremental .highlight-last}
+- Git integration
+  - GitHub Actions allows for Continuous Integration on GitHub
+- Interactive/dynamic content 
+- Single product! Quarto combines many functionalities, leading to fewer dependencies to render reports
+- Figure and table cross references work in word doc (previously not possible with R Markdown)
+- Multilingual team... [standardize reports]{.fragment}
+- Document templates can be created as Quarto extensions [{{< fa star >}}]{.fragment}\
+  - Don't have to build an R package to share the template
+  - Can be language-agnostic
+  - Works with presentations if we're not using any R code! 
+  
+:::
+
+## Interactive Code 
+
+::: {.panel-tabset}
+
+### R chunk
+
+
+````{.markdown}
+
+```{{r}}
+#| label: "ggplot-example"
+#| code-line-numbers: "5-9"
+
+library(ggplot2)
+library(plotly)
+library(gapminder)
+
+p <- gapminder %>%
+  filter(year==1977) %>%
+  ggplot( aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw()
+
+ggplotly(p)
+
+
+```
+````
+### Highlighted Code
+
+```{r}
+#| label: "ggplot-example"
+#| code-line-numbers: "|5-9|"
+#| echo: true
+#| eval: false 
+
+library(ggplot2)
+library(plotly)
+library(gapminder)
+
+p <- gapminder %>%
+  filter(year==1977) %>%
+  ggplot( aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw()
+
+ggplotly(p)
+
+
+
+
+```
+
+### Figure
+
+```{r}
+#| label: "ggplot-example-fig"
+
+
+library(ggplot2)
+library(plotly)
+library(gapminder)
+library(htmlwidgets)
+
+ggplotly(gapminder %>%
+  filter(year==1977) %>%
+  ggplot( aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw())
+
+
+
+
+```
+
+:::
+
+::: footer
+[r-graph-gallery](https://r-graph-gallery.com/interactive-charts.html)
+:::
+
+## Conclusion
+
+- RStudio v2022.07 and later includes support for editing and preview of Quarto documents
+- Can use multiple languages in one document (think of `{reticulate}` for R {{< fa left-right >}} Python)
+- Can use one document for multiple outputs (html, pdf, word, ppt)
+- Quarto extensions makes it easy to create document templates that can be used across platforms 
+
+##
+
+![](https://usagif.com/wp-content/uploads/2020/11/mdvdthkyou.gif)
+
+## Resources 
+
+- [Quarto Intro Slides](https://quarto.org/docs/presentations/revealjs/demo/#/title-slide)
+- [Quarto](https://quarto.org/)
+- [rstudio::conf 2022 Workshop](https://rstudio-conf-2022.github.io/rmd-to-quarto/)
+- [Emil Hvitfeldt Quarto blogs](https://emilhvitfeldt.com/blog#category=quarto)
+- [GitHub repository with most up-to-date Quarto resources](https://github.com/mcanouil/awesome-quarto)
+- [Taylor Swift's Towering Year (made by Posit)](https://colorado.posit.co/rsc/tay-swift-tour/?mkt_tok=NzA5LU5YTi03MDYAAAGPv_qGZn8x95Dws5UJ3158TAN5EVLU68SYoumhNnRUtS8Jqw0Rnfx2k9OEXiNcWsQ1EiSEWvNctU3jPiOITrnXrkzgnRM0aSz1d3_5SP2e_W4)
